@@ -4,6 +4,8 @@
  * Includes UTM parameter capture and social media source detection
  */
 
+import { baseURL } from "../utils/constant/Constant";
+
 // Get or generate session ID
 function getSessionId() {
   let sessionId = sessionStorage.getItem('behavior_session_id');
@@ -136,7 +138,7 @@ async function trackBehavior(action, page, additionalData = {}) {
 
   try {
     // Remove trailing slash from API_URL to avoid double slashes
-    const API_URL = (process.env.REACT_APP_API_URL || 'http://localhost:5000').replace(/\/$/, '');
+    const API_URL = baseURL || 'https://crm-backen.vercel.app';
     await fetch(`${API_URL}/api/behavior/track`, {
       method: 'POST',
       headers: {
@@ -168,7 +170,7 @@ async function trackBehaviors(behaviors) {
 
   try {
     // Remove trailing slash from API_URL to avoid double slashes
-    const API_URL = (process.env.REACT_APP_API_URL || 'http://localhost:5000').replace(/\/$/, '');
+    const API_URL = baseURL || 'https://crm-backen.vercel.app';
     await fetch(`${API_URL}/api/behavior/track-batch`, {
       method: 'POST',
       headers: {
