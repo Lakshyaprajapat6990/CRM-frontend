@@ -10,6 +10,7 @@ export default function RazorpayCheckout() {
   const userGotra = location.state?.userGotra || "";
   const mobile = location.state?.mobile || "";
   const id = location.state?.id || "";
+  const packageType = location.state?.pkg || ""; // "single", "couple", "family" for Pooja, empty for Chadhava
   const loadScript = (src) => {
     return new Promise((resolve) => {
       const script = document.createElement("script");
@@ -20,6 +21,23 @@ export default function RazorpayCheckout() {
     });
   };
   console.log("location data----> ", location);
+  
+  // Function to create CRM contact using public endpoint
+  const createPublicContact = async (contactData) => {
+    try {
+      const response = await fetch(`${baseURL}/api/crm/public/bookings`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(contactData),
+      });
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error creating CRM contact:", error);
+      throw error;
+    }
+  };
+  
   const handlePayment = async () => {
     const res = await loadScript(
       "https://checkout.razorpay.com/v1/checkout.js"
@@ -72,6 +90,27 @@ export default function RazorpayCheckout() {
           const verifyData = await verifyRes.json();
           // alert(verifyData.message);
           if (verifyData.message === "Payment verified successfully") {
+            
+            // Create CRM contact after successful payment using public endpoint
+            try {
+              // Determine if it's Pooja or Chadhava based on packageType
+              const source = packageType ? "Pooja Booking" : "Chadhava Booking";
+              const serviceType = packageType ? `Pooja (${packageType})` : "Chadhava";
+              
+              await createPublicContact({
+                name: username,
+                phone: mobile,
+                status: "interested",
+                source: source,
+                interestedService: id,
+                notes: `${serviceType} booking - Amount: ₹${amount}, Participants: ${participants?.length || 1}`,
+              });
+              console.log("CRM contact created successfully");
+            } catch (crmError) {
+              console.error("Failed to create CRM contact:", crmError);
+              // Continue even if CRM contact creation fails
+            }
+            
             if (
               window.confirm(
                 "✅ Payment successful! Click OK to go to homepage."
