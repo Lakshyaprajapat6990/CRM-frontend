@@ -24,8 +24,6 @@ import { Switch } from "@mui/material";
 import { LanguageContext } from "../context/LanguageContext";
 import { motion } from "framer-motion";
 
-const user = JSON?.parse(localStorage.getItem("user"));
-
 const AnimatedDrawer = ({ open, onClose, children }) => {
   return (
     <Drawer
@@ -67,41 +65,7 @@ const navItemsRight = [
   },
   { label: "Temples", labelHi: "मंदिर", link: "/temple", linkHi: "/hi/temple" },
 ];
-const moreOptions =
-  user?.role === "admin"
-    ? [
-        { label: "Login", labelHi: "लॉग इन" },
-        {
-          label: "Contact Us",
-          link: "/contact",
-          labelHi: "संपर्क करे",
-          linkHi: "/hi/contact",
-        },
-        {
-          label: "Payment History",
-          labelHi: "भुगतान इतिहास",
-          link: "/payment-history",
-        },
-        {
-          label: "CRM Dashboard",
-          labelHi: "CRM डैशबोर्ड",
-          link: "/crm/dashboard",
-        },
-        {
-          label: "CRM Contacts",
-          labelHi: "CRM संपर्क",
-          link: "/crm/contacts",
-        },
-      ]
-    : [
-        { label: "Login", labelHi: "लॉग इन" },
-        {
-          label: "Contact Us",
-          link: "/contact",
-          labelHi: "संपर्क करे",
-          linkHi: "/hi/contact",
-        },
-      ];
+
 const NavButton = styled(Button)(({ theme }) => ({
   fontWeight: 500,
   fontSize: "1rem",
@@ -139,6 +103,9 @@ export default function Header() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [anchorEl, setAnchorEl] = useState(null);
+  
+  // Get user from localStorage - this needs to be inside the component to update on re-render
+  const user = JSON?.parse(localStorage.getItem("user"));
 
   const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);
   const handleMenuClose = () => setAnchorEl(null);
@@ -151,6 +118,44 @@ export default function Header() {
 
   const leftNav = getNavItemsByLanguage(navItemsLeft, language);
   const rightNav = getNavItemsByLanguage(navItemsRight, language);
+  
+  // Dynamic moreOptions based on user role - computed inside component to update on re-render
+  const currentUser = JSON?.parse(localStorage.getItem("user"));
+  const moreOptions = currentUser?.role === "admin"
+    ? [
+        { label: "Login", labelHi: "लॉग इन" },
+        {
+          label: "Contact Us",
+          link: "/contact",
+          labelHi: "संपर्क करे",
+          linkHi: "/hi/contact",
+        },
+        {
+          label: "Payment History",
+          labelHi: "भुगतान इतिहास",
+          link: "/payment-history",
+        },
+        {
+          label: "CRM Dashboard",
+          labelHi: "CRM डैशबोर्ड",
+          link: "/crm/dashboard",
+        },
+        {
+          label: "CRM Contacts",
+          labelHi: "CRM संपर्क",
+          link: "/crm/contacts",
+        },
+      ]
+    : [
+        { label: "Login", labelHi: "लॉग इन" },
+        {
+          label: "Contact Us",
+          link: "/contact",
+          labelHi: "संपर्क करे",
+          linkHi: "/hi/contact",
+        },
+      ];
+  
   const moreNav = getNavItemsByLanguage(moreOptions, language);
   const LanguageSwitch = styled(Switch)(({ theme }) => ({
     width: 70,

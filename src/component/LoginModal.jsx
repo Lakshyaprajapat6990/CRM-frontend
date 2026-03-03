@@ -58,7 +58,6 @@ const LoginModal = ({ open, onClose }) => {
       if (res?.error) {
         setApiError(res.error);
       } else {
-
         // Store user with token in localStorage for persistence
         const userWithToken = { ...res.user, token: res.token };
         localStorage.setItem("user", JSON.stringify(userWithToken));
@@ -69,7 +68,8 @@ const LoginModal = ({ open, onClose }) => {
         }
 
         onClose(); 
-        // window.location.reload(); 
+        // Force a re-render to update Header menu items
+        window.location.reload(); 
       }
 
       setLoading(false);
