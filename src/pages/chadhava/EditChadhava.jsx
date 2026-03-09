@@ -575,17 +575,16 @@ export default function EditChadhava({ open, handleClose }) {
                             onChange={async (e) => {
                               const file = e.currentTarget.files[0];
                               if (file) {
-                                // Upload image immediately
                                 const uploadedUrl = await UploadItemImg(file);
                                 if (uploadedUrl) {
-                                  setFieldValue(
-                                    `logoImages.${idx}.imageUrl`,
-                                    uploadedUrl?.data?.images
-                                  );
-                                  setFieldValue(
-                                    `logoImages.${idx}.url`,
-                                    uploadedUrl?.data?.images?.url
-                                  );
+                                  const newImageObj = {
+                                    url: uploadedUrl?.data?.images?.url,
+                                    imageUrl: uploadedUrl?.data?.images,
+                                    name: file.name
+                                  };
+                                  const updated = [...values.logoImages];
+                                  updated[idx] = newImageObj;
+                                  setFieldValue("logoImages", updated);
                                 }
                               }
                             }}

@@ -1,4 +1,4 @@
-
+                  .21
 import { Box, Button, Typography, IconButton, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { CustomTextField, GlobalCssStyles } from "../../style/GlobalCSS";
@@ -457,7 +457,7 @@ export default function AddChadhava({ open, handleClose }) {
                               }
                             }}
                           />
-                          {values.logoImages[idx] ? (
+                          {values.logoImages[idx]?.imageUrl ? (
                             <Box
                               sx={{
                                 display: "flex",
@@ -465,11 +465,23 @@ export default function AddChadhava({ open, handleClose }) {
                                 background: "#f3f2f1",
                                 padding: "4px 10px",
                                 borderRadius: 12,
+                                gap: 1,
                               }}
                             >
+                              {values.logoImages[idx]?.imageUrl?.url ? (
+                                <img
+                                  src={values.logoImages[idx].imageUrl.url}
+                                  alt={`logo-${idx}`}
+                                  style={{
+                                    width: 50,
+                                    height: 50,
+                                    objectFit: "cover",
+                                    borderRadius: 8,
+                                  }}
+                                />
+                              ) : null}
                               <Typography sx={{ fontFamily: "Poppins" }}>
-                                {values.logoImages[idx]?.name ||
-                                  "Uploaded Image"}
+                                {values.logoImages[idx]?.name || "Uploaded Image"}
                               </Typography>
                               <IconButton
                                 size="small"
