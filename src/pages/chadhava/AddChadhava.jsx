@@ -1,3 +1,4 @@
+
 import { Box, Button, Typography, IconButton, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { CustomTextField, GlobalCssStyles } from "../../style/GlobalCSS";
@@ -29,6 +30,8 @@ const initialValues = {
   subtitleHi: "",
   desc: null,
   descHi: null,
+  mandir: null,
+  mandirHi: null,
   chadhava: null,
   startDate: null,
   file: null,
@@ -1485,7 +1488,7 @@ export default function AddChadhava({ open, handleClose }) {
                       <Button
                         className="create-btn"
                         type="submit"
-                        disabled={!isValid || !dirty}
+                        // disabled={!isValid || !dirty}
                       >
                         Create Chadhava
                       </Button>
