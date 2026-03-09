@@ -1,4 +1,3 @@
-                  .21
 import { Box, Button, Typography, IconButton, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { CustomTextField, GlobalCssStyles } from "../../style/GlobalCSS";
