@@ -4,15 +4,15 @@ export const CreateChadhavaAPI = async (data, itemImage) => {
   try {
     // Build JSON object matching backend structure
     const jsonPayload = {
-      title: data.title,
-      titleHi: data.titleHi,
-      subtitle: data.subtitle,
-      subtitleHi: data.subtitleHi,
-      chadhava: data.chadhava,
-      desc: data.description,
-      desc_hi: data.descriptionHi,
-      mandir: data.mandir.value,
-      mandirHi: data.mandirHi.value,
+      title: data.title || "",
+      titleHi: data.titleHi || "",
+      subtitle: data.subtitle || "",
+      subtitleHi: data.subtitleHi || "",
+      chadhava: data.chadhava || null,
+      desc: data.description || "",
+      desc_hi: data.descriptionHi || "",
+      mandir: data.mandir?.value || "",
+      mandirHi: data.mandirHi?.value || "",
       items: (data.cItem || []).map((item, i) => ({
         title: item.title || "",
         titleHi: item.titleHi || "",
