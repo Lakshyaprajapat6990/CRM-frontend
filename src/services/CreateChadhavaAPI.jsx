@@ -1,6 +1,6 @@
 import axiosInstance from "../utils/axiosConfig";
-export const CreateChadhavaAPI = async (data, itemImage) => {
-  console.log("Data being sent to CreateChadhavaAPI:", itemImage);
+
+export const CreateChadhavaAPI = async (data) => {
   try {
     // Build JSON object matching backend structure
     const jsonPayload = {
@@ -13,7 +13,17 @@ export const CreateChadhavaAPI = async (data, itemImage) => {
       desc_hi: data.descriptionHi || "",
       mandir: data.mandir?.value || null,
       mandirHi: data.mandirHi?.value || null,
-      items: (data.cItem || []).map((item, i) => ({
+      // Include English images from logoImages array
+      images: (data.logoImages || []).filter(img => img && img.url).map(img => ({
+        url: img.url,
+        delete_url: img.delete_url || ""
+      })),
+      // Include Hindi images from logoImagesHi array
+      images_hi: (data.logoImagesHi || []).filter(img => img && img.url).map(img => ({
+        url: img.url,
+        delete_url: img.delete_url || ""
+      })),
+      items: (data.cItem || []).map((item) => ({
         title: item.title || "",
         titleHi: item.titleHi || "",
         description: item.description || "",
@@ -27,14 +37,14 @@ export const CreateChadhavaAPI = async (data, itemImage) => {
         description: b.description || "",
         descriptionHi: b.descriptionHi || "",
       })),
-        faq: Array.isArray(data.faq)
-    ? data.faq.map((f) => ({
-        question: f.question || "",
-        questionHi: f.questionHi || "",
-        answer: f.answer || "",
-        answerHi: f.answerHi || "",
-      }))
-    : [],
+      faq: Array.isArray(data.faq)
+        ? data.faq.map((f) => ({
+            question: f.question || "",
+            questionHi: f.questionHi || "",
+            answer: f.answer || "",
+            answerHi: f.answerHi || "",
+          }))
+        : [],
     };
 
     const response = await axiosInstance.post("/api/chadhavas", jsonPayload, {
@@ -59,3 +69,4 @@ export const CreateChadhavaAPI = async (data, itemImage) => {
     return { error: "Something went wrong." };
   }
 };
+
