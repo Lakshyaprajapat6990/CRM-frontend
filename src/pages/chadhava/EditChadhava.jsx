@@ -572,29 +572,23 @@ export default function EditChadhava({ open, handleClose }) {
                             id={`logo-images-upload-${idx}`}
                             style={{ display: "none" }}
                             accept="image/*"
-                            // onChange={(e) =>
-                            //  handleLogoImageUploadAtIndex(
-                            //                       e,
-                            //                       values,
-                            //                       setFieldValue,
-                            //                       idx,
-                            //                       "logoImages",
-                            //                       "newLogoImages"
-                            //                     )
-                            // }
-                            // onChange={async (e) => {
-                            //   const file = e.currentTarget.files[0];
-                            //   if (file) {
-                            //     // Upload image immediately
-                            //     const uploadedUrl = await UploadItemImg(file);
-                            //     if (uploadedUrl) {
-                            //       setFieldValue(
-                            //         `logoImages.${idx}.imageUrl`,
-                            //         uploadedUrl?.data?.images
-                            //       );
-                            //     }
-                            //   }
-                            // }}
+                            onChange={async (e) => {
+                              const file = e.currentTarget.files[0];
+                              if (file) {
+                                // Upload image immediately
+                                const uploadedUrl = await UploadItemImg(file);
+                                if (uploadedUrl) {
+                                  setFieldValue(
+                                    `logoImages.${idx}.imageUrl`,
+                                    uploadedUrl?.data?.images
+                                  );
+                                  setFieldValue(
+                                    `logoImages.${idx}.url`,
+                                    uploadedUrl?.data?.images?.url
+                                  );
+                                }
+                              }
+                            }}
                           />
                           {values.logoImages[idx] ? (
                             <Box

@@ -13,6 +13,14 @@ export const CreateChadhavaAPI = async (data, itemImage) => {
       desc_hi: data.descriptionHi || "",
       mandir: data.mandir?.value || "",
       mandirHi: data.mandirHi?.value || "",
+      // Include uploaded images from logoImages (English)
+      images: (data.logoImages || [])
+        .filter(img => img?.imageUrl)
+        .map(img => ({ url: img.imageUrl })),
+      // Include uploaded images from logoImagesHi (Hindi)
+      images_hi: (data.logoImagesHi || [])
+        .filter(img => img?.imageUrl)
+        .map(img => ({ url: img.imageUrl })),
       items: (data.cItem || []).map((item, i) => ({
         title: item.title || "",
         titleHi: item.titleHi || "",
